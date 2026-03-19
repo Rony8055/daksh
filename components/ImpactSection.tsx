@@ -8,6 +8,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Link from "next/link";
+import Gallery from "./Gallery";
 
 const partners = [
   { name: "SPARK Collective", desc: "Led by Smt. Smriti Irani" },
@@ -68,6 +69,7 @@ const ImpactSection = () => {
             </div>
           ))}
         </div>
+        <Gallery />
 
         {/* Featured Partners */}
         <div className="mb-20">
