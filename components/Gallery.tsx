@@ -2,21 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  Modal,
-  ModalContent,
-  ModalBody,
-  useDisclosure,
-  Button,
-  Chip,
-} from "@heroui/react";
-import {
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Image as ImageIcon,
-  Video,
-} from "lucide-react";
+import { Modal, ModalContent, ModalBody, useDisclosure, Button, Chip, } from "@heroui/react";
+import { X, ChevronLeft, ChevronRight, Image as ImageIcon, Video, } from "lucide-react";
 
 type MediaItem = {
   src: string;
@@ -26,12 +13,10 @@ type MediaItem = {
 
 export default function Gallery() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<"photos" | "videos">("photos");
 
   const items: MediaItem[] = [
-    // Images
     { src: "/images/imag1.png", type: "image" },
     { src: "/images/imag2.png", type: "image" },
     { src: "/images/imag3.png", type: "image" },
@@ -47,8 +32,6 @@ export default function Gallery() {
     { src: "/images/imag13.png", type: "image" },
     { src: "/images/imag14.png", type: "image" },
     { src: "/images/imag15.png", type: "image" },
-
-    // Videos
     { src: "/videos/video1.mp4", type: "video" },
     { src: "/videos/video2.mp4", type: "video" },
     { src: "/videos/video3.mp4", type: "video" },
@@ -68,22 +51,18 @@ export default function Gallery() {
       ? item.type === "image"
       : item.type === "video"
   );
-
   const openItem = (index: number) => {
     setSelectedIndex(index);
     onOpen();
   };
-
   const nextItem = () => {
     setSelectedIndex((prev) => (prev + 1) % filteredItems.length);
   };
-
   const prevItem = () => {
     setSelectedIndex((prev) =>
       prev === 0 ? filteredItems.length - 1 : prev - 1
     );
   };
-
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -91,20 +70,16 @@ export default function Gallery() {
       if (e.key === "ArrowRight") nextItem();
       if (e.key === "ArrowLeft") prevItem();
     };
-
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [isOpen, filteredItems.length]);
 
   return (
     <div className="py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto">
-      
-      {/* Heading */}
       <div className="text-center mb-8 sm:mb-10">
         <Chip className="px-4 py-2 text-sm bg-teal-100 text-teal-700 font-semibold rounded-full mb-4">
           Gallery
         </Chip>
-
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
           Our <span className="text-yellow-500">Moments</span> & Memories
         </h2>
@@ -113,8 +88,6 @@ export default function Gallery() {
           Explore photos and videos from our events.
         </p>
       </div>
-
-      {/* Tabs */}
       <div className="flex justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 flex-wrap">
         <Button
           startContent={<ImageIcon size={18} />}
@@ -127,7 +100,6 @@ export default function Gallery() {
         >
           Photos
         </Button>
-
         <Button
           startContent={<Video size={18} />}
           onPress={() => setActiveTab("videos")}
@@ -140,8 +112,6 @@ export default function Gallery() {
           Videos
         </Button>
       </div>
-
-      {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
         {filteredItems.map((item, i) => (
           <div
@@ -166,7 +136,6 @@ export default function Gallery() {
           </div>
         ))}
       </div>
-
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -177,8 +146,6 @@ export default function Gallery() {
         <ModalContent>
           {(onClose) => (
             <ModalBody className="relative flex items-center justify-center p-2 sm:p-6">
-
-              {/* ✅ ONLY ONE PREMIUM CLOSE BUTTON */}
               <Button
                 isIconOnly
                 onPress={onClose}
@@ -191,8 +158,6 @@ export default function Gallery() {
               >
                 <X size={20} />
               </Button>
-
-              {/* Left */}
               <Button
                 isIconOnly
                 className="absolute left-2 sm:left-4 bg-white/10 text-white"
@@ -200,8 +165,6 @@ export default function Gallery() {
               >
                 <ChevronLeft />
               </Button>
-
-              {/* Right */}
               <Button
                 isIconOnly
                 className="absolute right-2 sm:right-4 bg-white/10 text-white"
@@ -209,8 +172,6 @@ export default function Gallery() {
               >
                 <ChevronRight />
               </Button>
-
-              {/* Media */}
               {filteredItems[selectedIndex]?.type === "image" ? (
                 <Image
                   src={filteredItems[selectedIndex]?.src}
