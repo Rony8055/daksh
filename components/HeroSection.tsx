@@ -3,9 +3,11 @@ import heroBg from "@/assets/banner.jpg";
 import { Button } from "@heroui/button";
 import { Navbar } from "./navbar";
 import Link from "next/link";
+import AutoCarousel from "./AutoCarousel";
 
 const HeroSection = () => {
   return (
+    <>
     <section
       id="home"
       className="relative lg:min-h-screen flex items-center justify-center overflow-hidden"
@@ -109,6 +111,7 @@ const HeroSection = () => {
         </div>
       </div>
     </section>
+    <AutoCarousel /></>
   );
 };
 
