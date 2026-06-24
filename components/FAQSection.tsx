@@ -67,8 +67,9 @@ const FAQSection = () => {
                 title={<span className="font-semibold">{faq?.question}</span>}
                 className="mb-2 text-sm text-slate-500 leading-relaxed"
                 classNames={{
-                  base: "bg-white",
+                  base: "bg-white shadow-sm",
                   title: "text-black",
+                  content: "py-4",
                 }}
               >
                 {faq?.answer}

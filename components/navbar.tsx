@@ -25,12 +25,30 @@ export const Navbar = () => {
     { href: "#contact", label: "Contact" },
   ];
 
+  const scrollToSection = (id: string) => {
+  const element = document.querySelector(id);
+
+  if (!element) return;
+
+  const navbarHeight = 80;
+
+  const y =
+    element.getBoundingClientRect().top +
+    window.pageYOffset -
+    navbarHeight-20;
+
+  window.scrollTo({
+    top: y,
+    behavior: "smooth",
+  });
+};
+
   return (
     <HeroUINavbar
       maxWidth="xl"
       position="sticky"
       classNames={{
-        base: "bg-transparent backdrop-blur-none",
+        base: "fixed bg-[#0F3D3E]/70 backdrop-blur-md backdrop-blur-none",
         menu: "bg-[#0F3D3E]",
       }}
     >
@@ -42,6 +60,7 @@ export const Navbar = () => {
             <NavbarItem key={item.href}>
               <a
                 href={item.href}
+                onClick={() => scrollToSection(item.href)}
                 className="text-white hover:text-yellow-500 transition-colors text-sm"
               >
                 {item.label}
@@ -70,6 +89,7 @@ export const Navbar = () => {
             <NavbarMenuItem key={item.href}>
               <a
                 href={item.href}
+                onClick={() => scrollToSection(item.href)}
                 className="text-white hover:text-yellow-500 transition-colors text-sm cursor-pointer"
               >
                 {item.label}

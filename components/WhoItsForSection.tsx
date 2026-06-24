@@ -77,7 +77,7 @@ const WhoItsForSection = () => {
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto m-8 sm:mb-16">
+        <div className="text-center max-w-4xl mx-auto m-8 sm:mb-16">
           <span className="text-yellow-600 font-semibold text-sm uppercase tracking-wider mb-2 sm:mb-4 block">
             Who Can Benefit
           </span>

@@ -16,3 +16,11 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+#about,
+#services,
+#contact,
+#gallery,
+#testimonials {
+  scroll-margin-top: 100px;
+}

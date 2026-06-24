@@ -42,7 +42,7 @@ const ContactSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl shadow-black/5 h-fit">
+          <div className="bg-white rounded-2xl p-8 sm:p-13 shadow-xl shadow-black/5 h-fit">
             <h3 className="text-xl sm:text-2xl font-bold text-black mb-6">
               Send us a message
             </h3>
@@ -54,7 +54,7 @@ const ContactSection = () => {
                 variant="bordered"
                 placeholder="Your name"
                 classNames={{
-                  label: "font-medium !text-black",
+                  label: "font-large !text-black",
                   inputWrapper: "border-gray-200",
                 }}
                 isRequired
@@ -133,7 +133,7 @@ const ContactSection = () => {
               <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
                 Contact Information
               </h3>
-              <div className="space-y-4 sm:space-y-6">
+              <div className="flex gap-8 space-y-4 sm:space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-lg bg-primary-foreground/10 flex items-center justify-center flex-shrink-0">
                     <Mail className="w-6 h-6" />

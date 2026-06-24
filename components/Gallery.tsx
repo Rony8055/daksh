@@ -42,62 +42,66 @@ export default function Gallery() {
   const [gallerySections, setGallerySections] = useState<Section[]>([]);
 
   const fetchMedia = async () => {
-    try {
-      const res = (await CallFindMediaFiles()) as any;
-      const files = res?.data?.data || [];
+  try {
+    const res = (await CallFindMediaFiles()) as any;
+    const files = res?.data?.data || [];
 
-      const excluded = ["test", "Slider"];
+    const excluded = ["test", "Slider", "Moments"];
 
-      const filteredFiles = files.filter(
-        (item: any) => !excluded.includes(item.eventType)
-      );
+    const filteredFiles = files.filter(
+      (item: any) => !excluded.includes(item.eventType)
+    );
 
-      const momentData = filteredFiles.find(
-        (item: any) => item.eventType === "Moments"
-      );
+    const formatted: ApiMediaType = {};
+    const sections: Section[] = [];
 
-      if (!momentData) {
-        setApiMedia({});
-        setGallerySections([]);
+    filteredFiles.forEach((item: any) => {
+      const key = item.eventType?.toLowerCase();
+
+      if (
+        (!item.images || item.images.length === 0) &&
+        (!item.videos || item.videos.length === 0)
+      ) {
         return;
       }
 
-      const formatted: ApiMediaType = {};
-      const sections: Section[] = [];
+      formatted[key] = {
+        photos: (item.images || []).map((url: string) => ({
+          src: url.startsWith("http")
+            ? url
+            : `https://${url}`,
+          type: "image",
+        })),
 
-      filteredFiles.forEach((item: any) => {
-        const key = item.eventType?.toLowerCase();
+        videos: (item.videos || []).map((url: string) => ({
+          src: url.startsWith("http")
+            ? url
+            : `https://${url}`,
+          type: "video",
+        })),
+      };
 
-        if (!item.images || item.images.length === 0) return;
+      const cover =
+        item.images?.[0] ||
+        item.videos?.[0];
 
-        formatted[key] = {
-          photos: (item.images || []).map((url: string) => ({
-            src: url.startsWith("http") ? url : `https://${url}`,
-            type: "image",
-          })),
-          videos: (item.videos || []).map((url: string) => ({
-            src: url.startsWith("http") ? url : `https://${url}`,
-            type: "video",
-          })),
-        };
+      if (!cover) return;
 
-        const firstImage = item.images[0];
-
-        sections.push({
-          title: item.eventType,
-          cover: firstImage.startsWith("http")
-            ? firstImage
-            : `https://${firstImage}`,
-          key: key,
-        });
+      sections.push({
+        title: item.eventType,
+        cover: cover.startsWith("http")
+          ? cover
+          : `https://${cover}`,
+        key,
       });
+    });
 
-      setApiMedia(formatted);
-      setGallerySections(sections);
-    } catch (err) {
-      console.error("Error fetching media:", err);
-    }
-  };
+    setApiMedia(formatted);
+    setGallerySections(sections);
+  } catch (err) {
+    console.error("Error fetching media:", err);
+  }
+};
 
   useEffect(() => {
     fetchMedia();
@@ -126,7 +130,7 @@ export default function Gallery() {
 
   const prevItem = () => {
     setSelectedIndex((prev) =>
-      prev === 0 ? filteredItems.length - 1 : prev - 1
+      prev === 0 ? filteredItems.length - 1 : prev - 1,
     );
   };
 
@@ -154,7 +158,6 @@ export default function Gallery() {
 
   return (
     <div className="py-12 px-4 max-w-7xl mx-auto">
-
       <div className="text-center mb-10">
         <Chip className="bg-teal-100 text-teal-700 mb-4">Gallery</Chip>
         <h2 className="text-3xl font-bold">
@@ -194,7 +197,6 @@ export default function Gallery() {
         <ModalContent>
           {(onClose) => (
             <ModalBody className="relative flex flex-col items-center p-4">
-
               <Button
                 isIconOnly
                 onPress={onClose}

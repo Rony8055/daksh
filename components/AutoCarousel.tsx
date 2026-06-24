@@ -1,141 +1,3 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import Image from "next/image";
-// import { Button } from "@heroui/react";
-// import { ChevronLeft, ChevronRight } from "lucide-react";
-// import { CallFindMediaFiles } from "@/services/apiAction";
-
-// type ApiItem = {
-//   _id: string;
-//   fileName: string;
-//   mediaType: string;
-//   eventType: string;
-//   url: string;
-//   isVisible: boolean;
-// };
-
-// type MediaItem = {
-//   id: string;
-//   name: string;
-//   url: string;
-// };
-
-// export default function AutoCarousel() {
-//   const [items, setItems] = useState<MediaItem[]>([]);
-//   const [current, setCurrent] = useState(0);
-//   const fetchData = async () => {
-//     try {
-//       const res = await CallFindMediaFiles() as any;
-//       console.log("res", res)
-//       const mediaFiles: ApiItem[] = res?.data?.data?.MediaFile || [];
-//       console.log("check media", mediaFiles)
-
-//       const filtered = mediaFiles
-//         .filter(
-//           (item) =>
-//             item.mediaType === "image" &&
-//             item.eventType === "Slider" &&
-//             item.isVisible === true
-//         )
-//         .map((item) => ({
-//           id: item._id,
-//           name: item.fileName,
-//           url: item.url?.startsWith("http")
-//             ? item.url
-//             : `https://${item.url}`,
-//         }));
-
-//       setItems(filtered);
-//     } catch (err) {
-//       console.error("Error fetching media:", err);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchData();
-//   }, []);
-
-//   useEffect(() => {
-//     if (items.length === 0) return;
-
-//     const interval = setInterval(() => {
-//       setCurrent((prev) => (prev + 1) % items.length);
-//     }, 3000);
-
-//     return () => clearInterval(interval);
-//   }, [items]);
-
-//   const next = () => {
-//     if (items.length === 0) return;
-//     setCurrent((prev) => (prev + 1) % items.length);
-//   };
-
-//   const prev = () => {
-//     if (items.length === 0) return;
-//     setCurrent((prev) =>
-//       prev === 0 ? items.length - 1 : prev - 1
-//     );
-//   };
-
-//   return (
-//     <div className="relative w-full py-10 bg-[#0f1c1c] overflow-hidden">
-//       <Button
-//         isIconOnly
-//         radius="full"
-//         variant="light"
-//         className="absolute left-4 top-1/2 -translate-y-1/2 text-white z-10 bg-white/10 backdrop-blur-md"
-//         onPress={prev}
-//       >
-//         <ChevronLeft size={24} />
-//       </Button>
-//       <div className="flex items-center justify-center gap-4 px-10">
-//         {items.map((item, index) => {
-//           const isActive = index === current;
-
-//           return (
-//             <div
-//               key={item.id}
-//               className={`transition-all duration-500 rounded-xl overflow-hidden
-//               ${isActive ? "scale-110 z-10" : "scale-90 opacity-40"}
-//             `}
-//               style={{ width: isActive ? 260 : 200 }}
-//             >
-//               <Image
-//                 src={item.url}
-//                 alt={item.name}
-//                 width={300}
-//                 height={200}
-//                 className="object-cover w-full h-[160px] rounded-lg"
-//               />
-//             </div>
-//           );
-//         })}
-//       </div>
-//       <Button
-//         isIconOnly
-//         radius="full"
-//         variant="light"
-//         className="absolute right-4 top-1/2 -translate-y-1/2 text-white z-10 bg-white/10 backdrop-blur-md"
-//         onPress={next}
-//       >
-//         <ChevronRight size={24} />
-//       </Button>
-//       <div className="flex justify-center mt-6 gap-2">
-//         {items.map((_, i) => (
-//           <div
-//             key={i}
-//             onClick={() => setCurrent(i)}
-//             className={`w-2 h-2 rounded-full cursor-pointer transition ${
-//               i === current ? "bg-lime-400 scale-110" : "bg-gray-400"
-//             }`}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -155,9 +17,9 @@ export default function AutoCarousel() {
 
   const fetchData = async () => {
     try {
-      const res = await CallFindMediaFiles() as any;
+      const res = (await CallFindMediaFiles()) as any;
+
       const data = res?.data?.data || [];
-      console.log("object", data)
 
       const sliderData = data.find(
         (item: any) => item.eventType === "Slider"
@@ -171,14 +33,18 @@ export default function AutoCarousel() {
       const formatted = sliderData.images.map(
         (img: string, index: number) => ({
           id: `${index}`,
-          url: img.startsWith("http") ? img : `https://${img}`,
+          url: img.startsWith("http")
+            ? img
+            : `https://${img}`,
         })
-
       );
 
       setItems(formatted);
     } catch (err) {
-      console.error("Error fetching media:", err);
+      console.error(
+        "Error fetching media:",
+        err
+      );
     }
   };
 
@@ -187,79 +53,207 @@ export default function AutoCarousel() {
   }, []);
 
   useEffect(() => {
-    if (items.length === 0) return;
+    if (!items.length) return;
 
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % items.length);
+      setCurrent(
+        (prev) =>
+          (prev + 1) % items.length
+      );
     }, 3000);
 
-    return () => clearInterval(interval);
+    return () =>
+      clearInterval(interval);
   }, [items]);
 
   const next = () => {
-    setCurrent((prev) => (prev + 1) % items.length);
-  };
+    if (!items.length) return;
 
-  const prev = () => {
-    setCurrent((prev) =>
-      prev === 0 ? items.length - 1 : prev - 1
+    setCurrent(
+      (prev) =>
+        (prev + 1) % items.length
     );
   };
 
+  const prev = () => {
+    if (!items.length) return;
+
+    setCurrent((prev) =>
+      prev === 0
+        ? items.length - 1
+        : prev - 1
+    );
+  };
+
+  const getVisibleSlides = () => {
+    if (!items.length) return [];
+
+    const prevIndex =
+      current === 0
+        ? items.length - 1
+        : current - 1;
+
+    const nextIndex =
+      (current + 1) % items.length;
+
+    return [
+      {
+        ...items[prevIndex],
+        position: "prev",
+      },
+      {
+        ...items[current],
+        position: "active",
+      },
+      {
+        ...items[nextIndex],
+        position: "next",
+      },
+    ];
+  };
+
   return (
-    <div className="relative w-full py-10 bg-[#0f1c1c] overflow-hidden">
+    <div className="relative w-full overflow-hidden bg-[#0f1c1c] py-8 sm:py-10">
+
+      {/* Left Arrow */}
+
       <Button
         isIconOnly
         radius="full"
         variant="light"
-        className="absolute left-4 top-1/2 -translate-y-1/2 text-white z-10 bg-white/10 backdrop-blur-md"
         onPress={prev}
+        className="
+          absolute
+          left-2
+          sm:left-4
+          top-1/2
+          -translate-y-1/2
+          z-20
+          bg-white/10
+          backdrop-blur-md
+          text-white
+        "
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={22} />
       </Button>
 
-      <div className="flex items-center justify-center gap-4 px-10">
-        {items.map((item, index) => {
-          const isActive = index === current;
+      {/* Slides */}
 
-          return (
-            <div
-              key={item.id}
-              className={`transition-all duration-500 rounded-xl overflow-hidden
-              ${isActive ? "scale-110 z-10" : "scale-90 opacity-40"}
-            `}
-              style={{ width: isActive ? 260 : 200 }}
-            >
-              <Image
-                src={item.url}
-                alt={`slide-${index}`}
-                width={300}
-                height={200}
-                unoptimized
-                className="object-cover w-full h-[160px] rounded-lg"
-              />
-            </div>
-          );
-        })}
+      <div
+        className="
+          flex
+          items-center
+          justify-center
+          gap-3
+          sm:gap-4
+          px-10
+          sm:px-16
+        "
+      >
+        {getVisibleSlides().map(
+          (item: any) => {
+            const isActive =
+              item.position === "active";
+
+            return (
+              <div
+                key={`${item.id}-${item.position}`}
+                className={`
+                  overflow-hidden
+                  rounded-xl
+                  transition-all
+                  duration-500
+                  flex-shrink-0
+
+                  ${
+                    item.position !==
+                    "active"
+                      ? "hidden md:block"
+                      : ""
+                  }
+
+                  ${
+                    isActive
+                      ? "scale-100 md:scale-110 z-10"
+                      : "scale-90 opacity-40"
+                  }
+                `}
+              >
+                <Image
+                  src={item.url}
+                  alt="slider-image"
+                  width={400}
+                  height={250}
+                  unoptimized
+                  className="
+                    object-cover
+                    rounded-xl
+
+                    w-[280px]
+                    h-[180px]
+
+                    sm:w-[340px]
+                    sm:h-[220px]
+
+                    md:w-[240px]
+                    md:h-[160px]
+
+                    lg:w-[280px]
+                    lg:h-[180px]
+
+                    xl:w-[320px]
+                    xl:h-[200px]
+                  "
+                />
+              </div>
+            );
+          }
+        )}
       </div>
 
+      {/* Right Arrow */}
+
       <Button
         isIconOnly
         radius="full"
         variant="light"
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-white z-10 bg-white/10 backdrop-blur-md"
         onPress={next}
+        className="
+          absolute
+          right-2
+          sm:right-4
+          top-1/2
+          -translate-y-1/2
+          z-20
+          bg-white/10
+          backdrop-blur-md
+          text-white
+        "
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={22} />
       </Button>
 
-      <div className="flex justify-center mt-6 gap-2">
+      {/* Dots */}
+
+      <div className="flex justify-center gap-2 mt-6">
         {items.map((_, i) => (
-          <div
+          <button
             key={i}
-            onClick={() => setCurrent(i)}
-            className={`w-2 h-2 rounded-full cursor-pointer transition ${i === current ? "bg-lime-400 scale-110" : "bg-gray-400"
-              }`}
+            onClick={() =>
+              setCurrent(i)
+            }
+            className={`
+              h-2
+              rounded-full
+              transition-all
+              duration-300
+
+              ${
+                i === current
+                  ? "w-6 bg-lime-400"
+                  : "w-2 bg-gray-400"
+              }
+            `}
           />
         ))}
       </div>

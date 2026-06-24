@@ -45,7 +45,7 @@ const HowItWorksSection = () => {
   return (
     <section
       id="how-it-works"
-      className="py-12 sm:py-24 relative sm:px-18 bg-gray-50"
+      className="py-12 sm:py-24 relative sm:px-18 bg-gray-50 scroll-mt-24"
     >
       <div className="container bg-[fbfaf9] mx-auto px-4 lg:px-8">
         {/* Section Header */}
@@ -70,7 +70,7 @@ const HowItWorksSection = () => {
             {steps.map((step, index) => (
               <div key={index} className="relative group">
                 {/* Step Card */}
-                <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-xl shadow-black/5 hover:shadow-elevated transition-all duration-300 hover:-translate-y-2 text-center">
+                <div className="bg-white h-65 rounded-2xl p-4 sm:p-6 shadow-xl shadow-black/5 hover:shadow-elevated transition-all duration-300 hover:-translate-y-2 text-center">
                   {/* Step Number */}
                   <div
                     className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-br ${step.color} flex items-center justify-center mb-4 shadow-glow group-hover:scale-110 transition-transform`}

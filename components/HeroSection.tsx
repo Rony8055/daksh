@@ -60,7 +60,7 @@ const HeroSection = () => {
             <Button
               size="lg"
               as={Link}
-              href="https://play.google.com/store/apps/details?id=com.daksh.daksh"
+              href="https://media-daksh.sfo3.digitaloceanspaces.com/media/1780381121257-Final%20Daksh%20app%20video.mp4"
               target="_blank"
               className="font-semibold bg-gradient-to-r from-[#F6C04A] to-[#F2B233]
                 text-black px-8 py-6 text-lg
@@ -74,7 +74,7 @@ const HeroSection = () => {
               size="lg"
               variant="bordered"
               as={Link}
-              href="https://play.google.com/store/apps/details?id=com.daksh.daksh"
+              href="https://media-daksh.sfo3.digitaloceanspaces.com/media/1780381121257-Final%20Daksh%20app%20video.mp4"
               target="_blank"
               className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 px-8 py-6 text-lg backdrop-blur-sm"
             >
